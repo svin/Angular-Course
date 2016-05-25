@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="HelloWorldApp">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link href="media/css/bootstrap.min.css" rel="stylesheet">
+        <script src="angular.min.js"></script>
+        <script>
+            var HelloWorldApp = angular.module('HelloWorldApp',[]);
+            HelloWorldApp.controller("HelloCtr", ['$scope', function($scope){
+                // your code goes here
+                $scope.uName = 'Alon';
+                $scope.onBtnClick=function () {
+                    alert("You have been clicked");
+                }
+            }]);
+            HelloWorldApp.controller("HelloChildCtr", ['$scope', function($scope){
+                // your code goes here
+                console.log($scope.$parent.uName);
+                $scope.uName = 'Koop';
+            }]);
+        </script>
+    </head>
+
+    <body ng-controller = "HelloCtr">
+
+        Please add your Name: <input ng-model="uName"> <br/><br/>
+        Your Name is: {{uName}}
+        <br/>
+        <button ng-click="onBtnClick()">Click Me!</button>
+
+        <div ng-controller="HelloChildCtr">
+            {{uName}}
+        </div>
+
+
+
+    </body>
+</html>
