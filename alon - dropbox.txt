@@ -1,1 +1,8 @@
 http://pastebin.com/dq9kstFd
+
+
+modernizer - js open source
+
+if(modernizer.....){
+
+}

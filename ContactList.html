@@ -8,20 +8,72 @@
     <link href="media/css/bootstrap.min.css" rel="stylesheet">
     <script>
         var ContactListApp = angular.module('ContactListApp', []);
-        ContactListApp.controller("ContactListCtr", ['$scope', function ($scope) {
+        ContactListApp.controller("ContactListCtr", ['$scope', '$filter', function($scope, $filter) {
+            var filteredData = $filter('number')(1000000.123456,2);
             $scope.contact = {};
+            $scope.showMultipleActions = false;
             $scope.contactList = [
                 {name: "Koop", email: "inter@yahoo.com"},
                 {name: "Bob", email: "BM@yahoo.com"}
             ];
 
             $scope.onBtnClick = function() {
-                if($scope.contact.$valid) {
+                if($scope.contactForm.$valid) {
+                    $scope.contact.createDate = new Date;
                     $scope.contactList.push($scope.contact);
                     $scope.contact = {};
+                    $scope.addMode = false;
                 }
-            }
+            };
+
+            //watch on single item
+            $scope.$watch('contact.email', function (newVal, oldVal) {
+
+            });
+
+            //watch on collection
+            $scope.$watchCollection('contactList', function (newVal, oldVal) {
+
+            });
+
+
+            //deep watch (Objects/Collections)
+            $scope.$watch('contactList', function (newVal, oldVal) {
+                _localStorageManager(newVal, oldVal);
+
+                $scope.showMultipleActions = false;
+                for(var i=0; i<$scope.contactList.length; i++){
+                    if($scope.contactList[i].checked){
+                        // show the delete button
+                        $scope.showMultipleActions = true;
+                        break;
+                    }
+                }
+            },true);
+
+            function _localStorageManager(newVal, oldVal) {
+                    if(!window.localStorage) {
+                        alert('Browser not supported');
+                    }
+                    if(newVal == oldVal /*undefined on init*/) {
+                        //init the lists
+                        var jsonStr = window.localStorage.getItem('contactList');
+                        // if item exists
+                        if(jsonStr){
+                            $scope.contactList = JSON.parse(jsonStr);
+                            if(!angular.isArray($scope.contactList)){
+                                $scope.contactList = [];
+                            }
+                        }
+                    }
+                    // user just added/removed item
+                    else{
+                        var jsonStr = JSON.stringify($scope.contactList);
+                        window.localStorage.setItem('contactList', jsonStr);
+                    }
+                }
         }]);
+
     </script>
     <style>
         input.ng-invalid{
@@ -30,14 +82,21 @@
         input.ng-valid{
             color: green;
         }
+
+        [ng-cloak]{
+            display: none;
+        }
     </style>
 </head>
 
-<body ng-controller="ContactListCtr">
+<body ng-controller="ContactListCtr" ng-cloak>
     <br/>
-    <h1>Contacts list form</h1>
+    <h1>Contact list form</h1>
+    <button class="btn btn-link" ng-click="addMode = true" ng-hide="addMode">
+        <span class="glyphicon glyphicon-plus-sign"></span>
+        Add Contact</button>
     <div class="container">
-        <form name="contactForm">
+        <form name="contactForm" ng-show="addMode">
             <div class="row">
                 <div class="col-xs-3">
                     <div class="input-group col-xs-12" >
@@ -48,23 +107,42 @@
                     <div class="input-group">
                         <input type="email" class="form-control" placeholder="Email" ng-model="contact.email" required>
                   <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="onBtnClick()">Add!</button>
+                    <button class="btn btn-default" type="button" ng-click="onBtnClick()">Add</button>
                   </span>
                     </div><!-- /input-group -->
                 </div><!-- /.col-lg-6 -->
             </div><!-- /.row -->
             <br/>
+
             <p class="text-primary" ng-hide="contactForm.$dirty">Please add contact details into form</p>
             <p class="text-primary" ng-show="contactForm.$invalid">The form have errors</p>
         </form>
             <div class="row"></div>
             <div>
-                <h2>Contact List</h2>
-                <ul>
-                    <li ng-repeat="localContact in contactList track by $index">{{localContact.name}} {{localContact.email}}</li>
-                </ul>
-            </div>
+                <h2>Contacts List <button class="btn btn-danger" ng-show="showMultipleActions">Delete Marked</button> </h2>
+                <ul class="list-unstyled">
+                    <li ng-repeat="localContact in contactList track by $index"
+                        ng-class='("text-danger": localContact.checked)'>
+                        <input type="checkbox" ng-model="localContact.checked"> {{localContact.name}}
+                        <a href="mailto:"> {{localContact.email}}</a>
 
+                        <span class="glyphicon" ng-class='{
+                            "glyphicon-ok text-success": localContact.verified,
+                            "text-success": localContact.verified,
+                            "glyphicon-remove": !localContact.verified,
+                            "text-danger": !localContact.verified
+                         }'>
+                        </span>
+                        <button class="btn btn-link" ng-hide="localContact.verified" ng-click="localContact.verified=true">Verify</button>
+                        ({{localContact.createDate | date:'dd-MM-yyyy HH:mm:ss +0500'}})
+                    </li>
+                </ul>
+
+                <code>{{contactList |json}}</code>
+            </div>
+        <h3>Filters</h3>
+        currency {{22585.564 | currency : '\u20AA'}}<br/>
+        currency {{22585.564 | number : 2 }}<br/>
     </div>
 
 
