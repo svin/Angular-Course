@@ -35,7 +35,7 @@
 
 <body ng-controller="ContactListCtr">
     <br/>
-
+    <h1>Contacts list form</h1>
     <div class="container">
         <form name="contactForm">
             <div class="row">
@@ -53,8 +53,10 @@
                     </div><!-- /input-group -->
                 </div><!-- /.col-lg-6 -->
             </div><!-- /.row -->
-
-
+            <br/>
+            <p class="text-primary" ng-hide="contactForm.$dirty">Please add contact details into form</p>
+            <p class="text-primary" ng-show="contactForm.$invalid">The form have errors</p>
+        </form>
             <div class="row"></div>
             <div>
                 <h2>Contact List</h2>
@@ -62,7 +64,7 @@
                     <li ng-repeat="localContact in contactList track by $index">{{localContact.name}} {{localContact.email}}</li>
                 </ul>
             </div>
-        </form>
+
     </div>
 
 
