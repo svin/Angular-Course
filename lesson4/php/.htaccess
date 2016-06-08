@@ -1,0 +1,5 @@
+RewriteEngine on
+RewriteRule ([.*]) rest.php?table=$1
+RewriteRule ([.*])/([0-9]+) rest.php?table=$1&id=$2
+
+

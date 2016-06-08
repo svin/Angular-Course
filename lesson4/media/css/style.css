@@ -1,0 +1,10 @@
+input.ng-valid{
+	background: green;
+}
+input.ng-invalid{
+	background: red;
+}
+
+[ng-cloak]{
+	display:none;
+}

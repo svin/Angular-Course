@@ -1,0 +1,89 @@
+<html ng-app="ContactListApp">
+	<head>
+
+		<link href="media/css_libs/bootstrap.min.css" rel="stylesheet">
+		<style>
+			input.ng-valid{
+				background: green;
+			}
+			input.ng-invalid{
+				background: red;
+			}
+
+			[ng-cloak]{
+				display:none;
+			}
+		</style>
+	</head>
+	<body ng-controller="ContactListCtr" >
+		<div ng-hide="true">Loading...</div>
+		<div class="container" ng-cloak>
+			<h1>Contacts list form</h1>
+			<button class="btn btn-link" ng-click="addMode=true" ng-hide="addMode" >
+				<span class="glyphicon glyphicon-plus-sign"></span>
+				Add Contact</button>
+			<form name="contactForm" ng-show="addMode">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-input">
+							<input type="text" ng-model="contact.name" class="form-control" placeholder="add Name" required>
+						</div><!-- /input-group -->
+					</div><!-- /.col-lg-6 -->
+					<div class="col-lg-6">
+						<div class="input-group">
+							<input type="email" name="contactEmail" ng-model="contact.email" class="form-control" placeholder="add email" required>
+							<span class="input-group-btn">
+								<button ng-click="onContactAdd()" class="btn btn-default" type="button">Add!</button>
+							</span>
+							<p class="text-danger" ng-show="contactForm.contactEmail.$invalid">Error email</p>
+						</div><!-- /input-group -->
+					</div><!-- /.col-lg-6 -->
+					</div><!-- /.row -->
+					<p class="text-primary" ng-hide="contactForm.$dirty">Please add contact details into form</p>
+					<p class="text-primary" ng-show="contactForm.$invalid">The form have errors</p>
+			</form>
+						<div>
+						<h2>contact List
+							<button class="btn btn-danger" ng-show="showMultiplesActions">Delete marked</button>
+						</h2>
+						<ul class="list-unstyled">
+								<li ng-repeat="localContact in contactList track by $index">
+									<input type="checkbox" ng-model="localContact.checked"> {{localContact.name}}
+									<a href="mailto:{{localContact.email}}">{{localContact.email}}</a>
+									<span class="glyphicon" ng-class='{
+										"glyphicon-ok": localContact.verified,
+										"text-success": localContact.verified,
+										"glyphicon-remove": !localContact.verified,
+										"text-danger": !localContact.verified
+									}'  "></span>
+									<button class="btn btn-link" ng-hide="localContact.verified"
+									ng-click="localContact.verified=true">verify</button>
+									({{localContact.createDate | date : 'dd/M/yyyy HH:mm:ss'}})
+								</li>
+						</ul>
+						<h3>Directives</h3>
+						<span a-wrap>This should be wrapped with `A`</span>
+						<input ng-model="name">
+						<div ctr-direct dname="name"></div>
+						<a hello href="http://google.com" class="text-primary"></a>
+						<my-tpl></my-tpl>
+						
+						<h3>Filter</h3>
+						currency {{12555.564 | currency : '\u20AA'}}<br/>
+						number {{12555.564 | number:2 }}<br/>
+						reverse: {{'Alon Nagar'| reverse:'rock'}}
+						<code>{{contactList|json}}</code>
+				</div>
+				<input class="datepicker" />
+		</div>
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw=" crossorigin="anonymous"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
+		<link href="https://code.jquery.com/ui/1.11.4/themes/humanity/jquery-ui.css" rel="stylesheet" />
+		<script src="media/js/angular/app.ng.js"></script>
+		<script src="media/js/angular/filters.ng.js"></script>
+		<script src="media/js/angular/directives.ng.js"></script>
+		<script src="media/js/angular/Controllers/ContactListCtr.ng.js"></script>
+		
+	</body>
+</html>

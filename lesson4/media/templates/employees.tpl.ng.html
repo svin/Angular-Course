@@ -1,0 +1,20 @@
+<a class="btn btn-success" href="#/employees/form"> + Add employee</a>
+<table class="table table-bordered table-hover table-stripped">
+    <tr>
+        <th>id</th>
+        <th>first</th>
+        <th>last</th>
+        <th>age</th>
+        <th>actions</th>
+    </tr>
+    <tr ng-repeat="employeeObj in employeesMap track by $index">
+        <td>{{employeeObj.id}}</td>
+        <td>{{employeeObj.firstname}}</td>
+        <td>{{employeeObj.lastname}}</td>
+        <td>{{employeeObj.age}}</td>
+        <td>
+            <a href="#/employees/form/{{employeeObj.id}}">edit</a>
+            <a>delete</a>
+        </td>
+    </tr>
+</table>

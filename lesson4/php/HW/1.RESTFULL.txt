@@ -1,0 +1,34 @@
+1. finish the RestAbstract class.
+    - implement PUT
+            make sure that you get an ID and show JSON error message if ID not sent to this request
+    - implement DELETE
+            make sure that you get an ID and show JSON error message if ID not sent to this request
+2. why we insist on ID on PUT and DELETE?
+
+3. Build table `users` with the next colums:
+    - id [INT,PK,AI]
+    - first [varchar(45)]
+    - last [varchar(45)]
+    - gender [ENUM("MALE","FEMALE")] //google about enum!
+    - email [varchar(255)]
+
+4. extend RestAbstract with the class "Users", make sure that all the restfull function works
+        //this should add the user
+        POST /rest.php?tableName=Users
+                    raw data: {"first":"Alon","last":"Nagar","gender":"MALE","email":"Alon.wrk@gmail.com"}
+
+        //should show all the users as dataset
+        GET /rest.php?tableName=Users
+
+        //should show user of id 1
+        GET /rest.php?tableName=Users&id=1
+
+        // should update the user to be Yael, And Female
+        PUT /rest.php?tableName=Users&id=1
+            raw data: {"first":"Yael","gender":"FEMALE"}
+
+        // should delete the user
+        DELETE /rest.php?tableName=Users&id=1
+
+
+

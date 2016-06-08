@@ -1,0 +1,65 @@
+<html ng-app="ContactListApp">
+	<head>
+		<script src="angular.min.js"></script>
+		<link href="media/css/bootstrap.min.css" rel="stylesheet">
+		<style>
+			input.ng-valid{
+				background: green;
+			}
+			input.ng-invalid{
+				background: red;
+			}
+		</style>
+		<script>
+			var ContactListApp = angular.module('ContactListApp',[]);
+			ContactListApp.controller("ContactListCtr",['$scope',function($scope){
+					$scope.contact={};
+					$scope.contactList=[
+						{name: "Kipi ben Kipod",email: "kipi@sesamestreet.com"},
+						{name: "Zipora",email: "zipora@sesamestreet.com"}
+					];
+					$scope.onContactAdd=function(){
+							if($scope.contactForm.$valid){
+								$scope.contactList.push($scope.contact);
+								$scope.contact={};
+							}
+					}
+			}]);
+
+		</script>
+	</head>
+	<body ng-controller="ContactListCtr">
+		<div class="container">
+			<h1>Contacts list form</h1>
+			<form name="contactForm">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-input">
+							<input type="text" ng-model="contact.name" class="form-control" placeholder="add Name" required>
+						</div><!-- /input-group -->
+					</div><!-- /.col-lg-6 -->
+					<div class="col-lg-6">
+						<div class="input-group">
+							<input type="email" name="contactEmail" ng-model="contact.email" class="form-control" placeholder="add email" required>
+							<span class="input-group-btn">
+								<button ng-click="onContactAdd()" class="btn btn-default" type="button">Add!</button>
+							</span>
+							<p class="text-danger" ng-show="contactForm.contactEmail.$invalid">Error email</p>
+						</div><!-- /input-group -->
+					</div><!-- /.col-lg-6 -->
+					</div><!-- /.row -->
+					<p class="text-primary" ng-hide="contactForm.$dirty">Please add contact details into form</p>
+					<p class="text-primary" ng-show="contactForm.$invalid">The form have errors</p>
+			</form>
+						<div>
+						<h2>contact List</h2>
+						<ul>
+								<li ng-repeat="localContact in contactList track by $index">
+									{{localContact.name}} : {{localContact.email}}
+								</li>
+						</ul>
+				</div>
+
+		</div>
+	</body>
+</html>

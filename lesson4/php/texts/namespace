@@ -1,0 +1,8 @@
+1. set all the classes with namespace:
+    namespace demo;
+2. all the classes must sit under folder "demo";
+    \libs\demo\class.php
+3. when using the classes use:
+    new \demo\class();
+
+    https://github.com/alonphp/php4578.git
